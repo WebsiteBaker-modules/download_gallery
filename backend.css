@@ -1,0 +1,23 @@
+input.mod_download_gallery_edit_css {
+  color: #008;
+  background-color: #F0F0F0;
+  border: 1px solid gray;
+  padding: 2px;
+  margin: 0;
+  margin-left: 625px;
+  margin-top: -20px;
+  margin-bottom: 5px;
+  width: 110px;
+}
+
+.download_gallery_help .setting_name {
+	vertical-align: top;
+}
+
+.download_gallery_help .row_a a {
+	 border-bottom: 1px dashed #000;
+}
+
+.download_gallery_help .row_a a:hover {
+	 border-bottom: 1px solid #000;
+}
