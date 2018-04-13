@@ -25,7 +25,7 @@ require(WB_PATH.'/modules/admin.php');
 
 // Vagroup_idate all fields
 if($admin->get_post('title') == '') {
-	$admin->print_error($MESSAGE['GENERIC']['FILL_IN_ALL'], WB_URL.'/modules/download_gallery/modify_group.php?page_id='.$page_id.'&section_id='.$section_id.'&group_id='.$group_id);
+	$admin->print_error($MESSAGE['GENERIC_FILL_IN_ALL'], WB_URL.'/modules/download_gallery/modify_group.php?page_id='.$page_id.'&section_id='.$section_id.'&group_id='.$group_id);
 } else {
 	$title = $admin->add_slashes(strip_tags($admin->get_post('title')));
 }

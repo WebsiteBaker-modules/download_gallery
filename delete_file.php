@@ -2,7 +2,15 @@
 /* 
  * Copyright and more information see file info.php
  */
-
+ /*
+	changes by Stefek:
+	- added "reorder file position by group" 
+		This is needed to ensure that files of every group 
+		got their own ordering 
+	- apply special id null reorder function
+		(there is no such methode in the 'order' class
+ */
+ 
 require('../../config.php');
 
 // Get id
@@ -28,6 +36,8 @@ if($query_details->numRows() > 0) {
 // get the file information
 $fname = $get_details['filename'];
 $ext   = $get_details['extension'];
+$group_id = $database->get_one("SELECT `group_id` FROM ".TABLE_PREFIX."mod_download_gallery_files WHERE file_id = '$file_id'");
+
 
 //check for multiple evtries using the same file name
 $query_duplicates = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_download_gallery_files WHERE filename = '$fname' and extension='$ext'");
@@ -41,14 +51,30 @@ if($dups==1){
 		unlink($file);
 	}
 }
-
 // STEP 3:	Delete post
 $database->query("DELETE FROM ".TABLE_PREFIX."mod_download_gallery_files WHERE file_id = '$file_id' LIMIT 1");
 
 // STEP 4:	Clean up ordering
-require(WB_PATH.'/framework/class.order.php');
-$order = new order(TABLE_PREFIX.'mod_download_gallery_files', 'position', 'file_id', 'section_id');
-$order->clean($section_id);   // ??????
+
+/**
+	REORDER
+*/
+if($group_id == 0){
+	
+	// apply special id null reorder handling (load extern functions)
+	require('functions.php');
+	reorder_id_null_group(TABLE_PREFIX."mod_download_gallery_files", $section_id);
+	
+} else {
+
+	// Include the ordering class
+	require(WB_PATH.'/framework/class.order.php');			
+	// Initialize order object 
+	$order = new order(TABLE_PREFIX."mod_download_gallery_files", 'position', 'file_id', 'group_id');
+	// reorder all groups in this group_id
+	$order->clean( intval( $group_id ) );   
+}
+	
 
 // STEP 5:	Check if there is a db error, otherwise say successful
 if($database->is_error()) {

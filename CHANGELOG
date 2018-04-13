@@ -1,0 +1,135 @@
+Version: 2.74 at 06.03.2018 (jacobi22)
+    + fix broken download
+
+Version: 2.73 at 05.03.2018 (jacobi22)
+    + fix absolute path in save_file.php
+    + add some style's
+
+Version: 2.72 at 05.03.2018 (jacobi22)
+    + fix path in dlc.php
+
+Version: 2.71 at 05.03.2018 (jacobi22)
+    + fix error-messages in dlc.php
+
+Version: 2.70 at 05.03.2018 (jacobi22)
+    + set Version to 2.70, because, there are other versions 2.67 & 2.68 
+    + fix error-messages in upgrade.php
+
+Version: 2.63 at 22.02.2018 (jacobi22)
+
+    + add Changelog-file
+    + fix install.php
+    + fix add.php for mysql-Strict Mode
+    - remove preprocess
+    - remove all cellpadding & cellspacing
+    + repair multidimensional language indizes
+    + add w3.css to fix the modify_extension-popup
+    + fix add_file for mysql-strict-mode
+    - remove addslashes()
+
+Version 2.61 modified (02-01-2013) by Frank Heyne
+    + Added new field description for release date in help file, thanks to Lothar Matter
+
+Version 2.60 modified (01-18-2013) by Frank Heyne
+    + Added new field for release date of the document
+
+Version 2.51 modified (01-04-2013) by Frank Heyne
+    + Fixed Updated NL language file, thanks to Andre de Winkel
+    + Fixed Bug fix in modify_settings.php, thanks to Andre de Winkel
+
+Version 2.50 modified (10-01-2012) by Frank Heyne
+    + Fixed Upload does now work under Lepton 1.1
+    + Fixed Upload does only allow registered file types now
+
+Version 2.40 modified (12-09-2011) by Frank Heyne
+    + Added Option to decide whether "Save File" dialogue is shown or file will become opened in the browser
+
+Version 2.30 modified (08-07-2011) by Frank Heyne
+    + Fixed THEME_URL
+    + Added Compatibility with Lepton
+    + Added Possibility to reset download counter
+
+Version 2.22 modified (12-14-2010) by Frank Heyne
+    + Fixed backend security
+
+Version 2.21 modified (09-10-2009) by Frank Heyne
+    + Fixed backend security, thanks to doc!
+
+Version 2.20 modified (09-05-2009) by Frank Heyne
+    + Fixed problem with wrong mime types
+    + Fixed some bugs, partly security related
+
+Version 2.13 modified (08-26-2009) by Frank Heyne
+    + Added ability to add links to files on Windows network shares (they do only work with IE!)
+    + Fixed download links now are no longer guessable
+
+Version 2.12 modified (08-20-2009) by Frank Heyne
+    + Fixed install.php, thanks aldus!
+
+Version 2.10 modified (06-14-2009) by Frank Heyne
+    + Added to user upload: possibility to add file group
+    + Added to user upload: made captcha optional
+    + Fixed in user upload: sorted php, html and css code into different files
+    + Added new place holder for anchor: [FID] will create an anchor called "A"+file_id (this will not work when the list goes over multiple pages, so use with care!)
+    + Fixed in the backend: html validation errors (as far as module code is concerned)
+
+Version 2.05 modified (04-27-2009) by Frank Heyne
+    + Merged dlc.php and dl.php, removed dl.php
+    + Fixed bug which did disallow downloads from restricted pages with multiple groups (except for admins)
+
+Version 2.00 modified (12-23-2008) by Frank Heyne
+    + Added: possibility to add remote links to the list
+    + Added: possibility to sort list by title, date, size and downloads
+    (currently sort buttons must be placed into $setting_file_header)
+    + place holders for sort buttons are: [THTITLE], [THCHANGED], [THSIZE], [THCOUNT]
+    + Changed: modified_when from time stamp of the entry to the last write date of the file
+    + Fixed: warnings which happened when run with PHP error level E_ALL&E_STRICT
+    + Fixed: moved frontend css into separate file
+    + Changed: minor improvements
+
+Version 1.91 modified (12-06-2008) by Christian Sommer
+    + Added: some access restrictions and .htaccess file to: /media/download_gallery/
+
+Version 1.8 modified (11-30-2006) by RSmith
+    + Added: Searchfilter
+    + Fixed: Upgrade script only upgrades new fields
+
+Version 1.7 modified (11-19-2006) by RSmith
+    + Added: Download Gallery Groups added
+
+Version 1.6 modified (10-16-2006) by Rsmith
+    + Added: Addititonal Upload Settings - none, publc, registered
+    + Added: Download rights based on page settings, Public or registered
+    + Added: File URL hidden so not easily found and linkable
+
+Version 1.5 modified (09-12-2006) by Ruebenwurzel
+    + Fixed: install script now supports mysql5 strict mode
+
+Version 1.4 modified (5-15-2006) by RSmith
+    + Fixed: File deleting only deletes the file when the file is no longer used in any download gallery section
+    + Fixed: Section deleting only deletes the file when it is no longer used in any section
+    + Added: Ability to select any file from the MEDIA_DIRECTORY & subdirectorys
+    + Added: Can only delete files that have been uploaded via, download gallery
+    + Added: Automatic delete of empty/unsaved records
+    + Added: Sort records ascending / descending
+    + Added: Sort records manualy or by title
+    + Added: Sort records by extension, ascending or descending
+    + Added: User based uploading files now enabled/disabled via admin
+    + Added: Overwrite - If a file exists in any download gallery section it will not be overwritten unless the Overwrite checkbox is checked
+    + Added: Download Counter for the number of times the file has been downloaded
+    + Added: Added additional Lanugage File entries
+    + Added: Hides extension sort setting when Ordered Manualy in the setting admin
+
+Version 1.3 modified (3-10-2006) by Ruebenwurzel
+    + Added: WYSIWYG for the Description Field
+
+Version 1.1 modified (12-28-2005) by Ruebenwurzel
+    + Added: Language support to modify extension windows
+    + Fixed: Bug in modify extension window
+    + Changed: Minor layout changes in admin Interface
+    + Fixed: Code cleaning and all files stored in UNIX
+
+Version 1.0 modified (12-01-2005) by Woudloper
+    + Initial Release: all the available features
+
+69853427518

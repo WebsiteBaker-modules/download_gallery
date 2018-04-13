@@ -42,10 +42,10 @@ if(extension_loaded('gd') AND function_exists('imageCreateFromJpeg')) { /* Make'
 		if(isset($_POST['captcha']) AND $_POST['captcha'] != ''){
 			// Check for a mismatch
 			if(!isset($_POST['captcha']) OR !isset($_SESSION['captcha']) OR $_POST['captcha'] != $_SESSION['captcha']) {
-				$captcha_error = $MESSAGE['MOD_FORM']['INCORRECT_CAPTCHA'];
+				$captcha_error = $MESSAGE['MOD_FORM_INCORRECT_CAPTCHA'];
 			}
 		} else {
-			$captcha_error = $MESSAGE['MOD_FORM']['INCORRECT_CAPTCHA'];
+			$captcha_error = $MESSAGE['MOD_FORM_INCORRECT_CAPTCHA'];
 		}
 	}
 }
@@ -59,7 +59,7 @@ if(isset($captcha_error)) {
 } else {
 	// Validate all fields
 	if($admin->get_post('title') == '' AND $admin->get_post('url') == '') {
-		echo $MESSAGE['GENERIC']['FILL_IN_ALL']." -<a href=\"javascript: history.go(-1);\">BACK</a>-";
+		echo $MESSAGE['GENERIC_FILL_IN_ALL']." -<a href=\"javascript: history.go(-1);\">BACK</a>-";
 		exit;
 	} else {
 		$title = $admin->add_slashes(htmlspecialchars($admin->get_post('title')));

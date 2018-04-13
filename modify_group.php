@@ -1,8 +1,13 @@
 <?php
 /* 
- * Copyright and more information see file info.php
+	Copyright and more information see file info.php
  */
-
+/*
+ changes by Stefek:
+ 
+ - restyled the template
+ 
+*/
 require('../../config.php');
 
 // Get id
@@ -28,44 +33,41 @@ $fetch_content = $query_content->fetchRow();
 <input type="hidden" name="page_id" value="<?php echo $page_id; ?>" />
 <input type="hidden" name="group_id" value="<?php echo $group_id; ?>" />
 
-<table class="row_a" cellpadding="2" cellspacing="0" border="0" width="100%">
+<table class="settings_table" style="width:100%">
+	<caption><?php echo $TEXT['MODIFY'].'/'.$TEXT['ADD'].' '.$TEXT['GROUP']; ?></caption>	
 	<tr>
-		<td colspan="2"><strong><?php echo $TEXT['MODIFY'].'/'.$TEXT['ADD'].' '.$TEXT['GROUP']; ?></strong></td>
-	</tr>
-	<tr>
-		<td width="80"><?php echo $TEXT['TITLE']; ?>:</td>
+		<th><?php echo $TEXT['ACTIVE']; ?>:</th>
 		<td>
-			<input type="text" name="title" value="<?php echo $fetch_content['title']; ?>" style="width: 98%;" maxlength="255" />
+			<input type="radio" name="active" id="active_true" value="1" <?php if($fetch_content['active'] == 1) echo ' checked="checked"'; ?> />
+			<label for="active_true"><?php echo $TEXT['YES']; ?></label>			
+			<input type="radio" name="active" id="active_false" value="0" <?php if($fetch_content['active'] == 0) echo ' checked="checked"'; ?> />
+			<label for="active_false"><?php echo $TEXT['NO']; ?></label>
 		</td>
 	</tr>
 	<tr>
-		<td><?php echo $TEXT['ACTIVE']; ?>:</td>
+		<th><?php echo $TEXT['GROUP']; ?>-<?php echo $TEXT['TITLE']; ?>:</th>
 		<td>
-			<input type="radio" name="active" id="active_true" value="1" <?php if($fetch_content['active'] == 1) { echo ' checked="checked"'; } ?> />
-			<a href="#" onclick="javascript: document.getElementById('active_true').checked = true;">
-			<?php echo $TEXT['YES']; ?>
-			</a>
-			&nbsp; &nbsp; 
-			<input type="radio" name="active" id="active_false" value="0" <?php if($fetch_content['active'] == 0) { echo ' checked="checked"'; } ?> />
-			<a href="#" onclick="javascript: document.getElementById('active_false').checked = true;">
-			<?php echo $TEXT['NO']; ?>
-			</a>
+			<input type="text" id="title" name="title" value="<?php echo stripslashes($fetch_content['title']); ?>" style="width: 98%;font-size:12pt; font-weight:bold;" maxlength="255" />
 		</td>
 	</tr>
-</table>
-
-<table cellpadding="0" cellspacing="0" border="0" width="100%">
+	
+	<tfoot>
 	<tr>
-		<td align="left">
-			<input name="save" type="submit" value="<?php echo $TEXT['SAVE']; ?>" style="width: 100px; margin-top: 5px;" />
+		<td style="text-align:left;">
+			<input name="save" type="submit" value="<?php echo $TEXT['SAVE']; ?>" class="btn w3-theme-d5 w3-hover-green w3-padding-4 w3-border-theme" style="margin-top: 5px;" />
 		</td>
-		<td align="right">
-			<input type="button" value="<?php echo $TEXT['CANCEL']; ?>" onclick="javascript: window.location = '<?php echo ADMIN_URL; ?>/pages/modify.php?page_id=<?php echo $page_id; ?>';" style="width: 100px; margin-top: 5px;" />
+		<td style="text-align:right;">
+			<input type="button" value="<?php echo $TEXT['CANCEL']; ?>" onclick="javascript: window.location = '<?php echo ADMIN_URL; ?>/pages/modify.php?page_id=<?php echo $page_id; ?>';" class="btn w3-theme-d5 w3-hover-green w3-padding-4 w3-border-theme" style="margin-top: 5px;" />
 		</td>
 	</tr>
+	</tfoot>
 </table>
 </form>
+
 <?php
+if (empty($fetch_content['title']))
+	echo '<script type="text/javascript">document.getElementById("title").focus();</script>';
+
 // Print admin footer
 $admin->print_footer();
 

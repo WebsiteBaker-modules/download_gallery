@@ -4,17 +4,15 @@
  */
 
 require('../../config.php');
+// include the admin wrapper script
 $update_when_modified = true; // Tells script to update when this page was last updated
+$admin_header = false;
 require(WB_PATH.'/modules/admin.php');
 
 // Load Language file
-if(LANGUAGE_LOADED) {
-	if(!file_exists(WB_PATH.'/modules/download_gallery/languages/'.LANGUAGE.'.php')) {
-		require_once(WB_PATH.'/modules/download_gallery/languages/EN.php');
-	} else {
-		require_once(WB_PATH.'/modules/download_gallery/languages/'.LANGUAGE.'.php');
-	}
-}
+if (is_readable(__DIR__.'/languages/EN.php')) {require(__DIR__.'/languages/EN.php');}
+if (is_readable(__DIR__.'/languages/'.DEFAULT_LANGUAGE.'.php')) {require(__DIR__.'/languages/'.DEFAULT_LANGUAGE.'.php');}
+if (is_readable(__DIR__.'/languages/'.LANGUAGE.'.php')) {require(__DIR__.'/languages/'.LANGUAGE.'.php');}
 
 require(WB_PATH.'/framework/functions.php');
 
@@ -28,7 +26,7 @@ if (isset($_POST['fileext_id'])) {
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 	<head>
 		<title><?php echo $DGTEXT['MOD_TITLE']; ?></title>
-		<link href="<?php echo WB_URL; ?>/admin/interface/stylesheet.css" rel="stylesheet" type="text/css" />
+		<link href="<?php echo WB_URL; ?>/modules/download_gallery/backend.css" rel="stylesheet" type="text/css" />
 		<style type="text/css">
 		.modify_section {
 			margin-left	: 10px;
@@ -41,7 +39,7 @@ if (isset($_POST['fileext_id'])) {
 		</style>
 	</head>
 	<body>
-		<div class="modify_section">
+		<div  class="w3-container w3-padding-0 w3-blue">
 			<h1><?php echo $DGTEXT['MOD_FILE_EXT']; ?></h1>
 			<table>
 				<tr>
@@ -76,8 +74,8 @@ if (isset($_POST['fileext_id'])) {
 				</tr>
 				<tr>
 					<td style="text-align: center; height: 200px;">
-					<form action="save_extsettings.php?§leptokh=#-!leptoken-!#" method="post">
-					<input type="button" value="<?php echo $TEXT['CLOSE']; ?>" onclick="window.close(); return false;" style="width: 120px; margin-top: 5px;" />
+					<form action="save_extsettings.php" method="post">
+					<input type="button" value="<?php echo $TEXT['CLOSE']; ?>" onclick="window.close(); return false;" class="btn w3-theme-d5 w3-hover-green w3-padding-4 w3-border-theme" style="margin-top: 5px;" />
 					</form>
 					</td>
 				</tr>

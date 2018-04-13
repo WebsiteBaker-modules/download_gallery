@@ -1,20 +1,4 @@
-<?php
-/* 
- * Copyright and more information see file info.php
- */
 
-// STEP 1:	Initialize
-if (file_exists('../../config.php')) {
-	require('../../config.php');   // called from within page settings
-} else {
-	require('../../../config.php');	// called from within module info
-}
-
-// Include WB admin wrapper script
-require(WB_PATH.'/modules/admin.php');
-
-// STEP 2:	Display the help page.
-?>
 
 <div class="download_gallery_help">
 	<h2>Help about the Download Gallery Module</h2>
@@ -126,8 +110,8 @@ require(WB_PATH.'/modules/admin.php');
 	
 	<strong>Version 2.51 modified (01-04-2013) by Frank Heyne</strong>
 		<ul>
-			<li><strong>Fixed</strong> Updated NL language file, thanks to André de Winkel</li>
-			<li><strong>Fixed</strong> Bug fix in modify_settings.php, thanks to André de Winkel</li>
+			<li><strong>Fixed</strong> Updated NL language file, thanks to Andrï¿½ de Winkel</li>
+			<li><strong>Fixed</strong> Bug fix in modify_settings.php, thanks to Andrï¿½ de Winkel</li>
 		</ul>
 	<hr />
 	
@@ -282,7 +266,7 @@ require(WB_PATH.'/modules/admin.php');
 <?php
 if ($section_id > 1) {
 ?>
-	<table cellpadding="0" cellspacing="0" border="0" width="100%">	
+	<table style=width:100%">	
 		<tr>
 			<td>
 				<input type="button" value="<?php echo $TEXT['BACK']; ?>" onclick="javascript: window.location = '<?php echo ADMIN_URL; ?>/pages/modify.php?page_id=<?php echo $page_id; ?>';" style="width: 100px; margin-top: 5px;" />

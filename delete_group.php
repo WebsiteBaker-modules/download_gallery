@@ -2,7 +2,15 @@
 /*  
  * Copyright and more information see file info.php
  */
-
+/*
+ changes by Stefek:
+ 
+ - added reordering to reorder the group position after deleting a group correctly
+ - changed the use of page_id to section_id in database queries
+ 
+*/
+ 
+ 
 require('../../config.php');
 
 // Get id
@@ -18,16 +26,25 @@ $update_when_modified = true; // Tells script to update when this page was last 
 require(WB_PATH.'/modules/admin.php');
 
 //move all fiels in group to no group
-$database->query("UPDATE ".TABLE_PREFIX."mod_download_gallery_files SET group_id = '0' WHERE group_id = '$group_id' and page_id = '$page_id'");
+$database->query("UPDATE ".TABLE_PREFIX."mod_download_gallery_files SET group_id = '0',  active = '0' WHERE group_id = '$group_id' AND section_id = '$section_id'");
 
 // Delete row
-$database->query("DELETE FROM ".TABLE_PREFIX."mod_download_gallery_groups WHERE group_id = '$group_id' and page_id = '$page_id'");
+$database->query("DELETE FROM ".TABLE_PREFIX."mod_download_gallery_groups WHERE group_id = '$group_id' AND section_id = '$section_id'");
+
+// Include the ordering class
+require(WB_PATH.'/framework/class.order.php');			
+// Initialize order object 
+$order = new order(TABLE_PREFIX."mod_download_gallery_groups", 'position', 'group_id', 'section_id');
+// reorder all groups in this section_id
+$order->clean( $section_id );   
 
 // Check if there is a db error, otherwise say successful
+$back_location = ADMIN_URL.'/pages/modify.php?page_id='.$page_id;
+
 if($database->is_error()) {
-	$admin->print_error($database->get_error(), ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
+	$admin->print_error($database->get_error(), $back_location);
 } else {
-	$admin->print_success($TEXT['SUCCESS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
+	$admin->print_success($TEXT['SUCCESS'], $back_location);
 }
 
 // Print admin footer

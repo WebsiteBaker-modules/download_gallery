@@ -58,7 +58,7 @@ $mod_dlg = 'CREATE TABLE IF NOT EXISTS `'.TABLE_PREFIX.'mod_download_gallery_gro
 $database->query($mod_dlg);
 
 //get settings table to see what needs to be created
-$settingstable=$database->query("SELECT * FROM `".TABLE_PREFIX."mod_download_gallery_settings");
+$settingstable=$database->query("SELECT * FROM `".TABLE_PREFIX."mod_download_gallery_settings`");
 $settings = $settingstable->fetchRow();
 
 // If not already there, add new fields to the existing settings table
@@ -68,7 +68,7 @@ if(!isset($settings['gfooter'])){
 		if($database->query("ALTER TABLE `".TABLE_PREFIX."mod_download_gallery_settings` ADD `gfooter` TEXT NOT NULL AFTER `userupload`")) {
 			echo '<span class="good">Database Field gfooter added successfully</a><br />';
 		}
-		echo '<span class="bad">'.mysql_error().'</span><br />';
+		echo '<span class="bad">'.$database->get_error().'</span><br />';
 }else{echo '<span class="ok">Database Field gfooter exists update not needed</span><br />';}
 
 
@@ -76,7 +76,7 @@ if(!isset($settings['gloop'])){
 		if($database->query("ALTER TABLE `".TABLE_PREFIX."mod_download_gallery_settings` ADD `gloop` TEXT NOT NULL AFTER `userupload`")) {
 			echo '<span class="good">Database Field gloop added successfully</span><br />';
 		}
-		echo '<span class="bad">'.mysql_error().'</span><br />';
+		echo '<span class="bad">'.$database->get_error().'</span><br />';
 }else{echo '<span class="ok">Database Field gloop exists update not needed</span><br />';}
 		
 
@@ -84,7 +84,7 @@ if(!isset($settings['gheader'])){
 		if($database->query("ALTER TABLE `".TABLE_PREFIX."mod_download_gallery_settings` ADD `gheader` TEXT NOT NULL AFTER `userupload`")) {
 			echo '<span class="good">Database Field gheader added successfully</span><br />';
 		}
-		echo '<span class="bad">'.mysql_error().'</span><br />';
+		echo '<span class="bad">'.$database->get_error().'</span><br />';
 }else{echo '<span class="ok">Database Field gheader exists update not needed</span><br />';}
 		
 
@@ -92,7 +92,7 @@ if(!isset($settings['search_filter'])){
 		if($database->query("ALTER TABLE `".TABLE_PREFIX."mod_download_gallery_settings` ADD `search_filter` TEXT NOT NULL AFTER `gfooter`")) {
 			echo '<span class="good">Database Field search_filter added successfully</span><br />';
 		}
-		echo '<span class="bad">'.mysql_error().'</span><br />';
+		echo '<span class="bad">'.$database->get_error().'</span><br />';
 }else{echo '<span class="ok">Database Field search_filter exists update not needed</span><br />';}
 		
 
@@ -100,7 +100,7 @@ if(!isset($settings['search_layout'])){
 		if($database->query("ALTER TABLE `".TABLE_PREFIX."mod_download_gallery_settings` ADD `search_layout` TEXT NOT NULL AFTER `search_filter`")) {
 			echo '<span class="good">Database Field search_layout added successfully</span><br />';
 		}
-		echo '<span class="bad">'.mysql_error().'</span><br />';
+		echo '<span class="bad">'.$database->get_error().'</span><br />';
 }else{echo '<span class="ok">Database Field search_layout exists update not needed</span><br />';}
 
 
@@ -108,39 +108,39 @@ if(!isset($settings['use_captcha'])){
 		if($database->query("ALTER TABLE `".TABLE_PREFIX."mod_download_gallery_settings` ADD `use_captcha` TINYINT( 3 ) NOT NULL DEFAULT 0 AFTER `search_layout`")) {
 			echo '<span class="good">Database Field use_captcha added successfully</span><br />';
 		}
-		echo '<span class="bad">'.mysql_error().'</span><br />';
+		echo '<span class="bad">'.$database->get_error().'</span><br />';
 }else{echo '<span class="ok">Database Field suse_captcha exists update not needed</span><br />';}
 
 if(!isset($settings['pushmode'])){
 		if($database->query("ALTER TABLE `".TABLE_PREFIX."mod_download_gallery_settings` ADD `pushmode` TINYINT( 3 ) NOT NULL DEFAULT 0 AFTER `search_layout`")) {
 			echo '<span class="good">Database Field pushmode added successfully</span><br />';
 		}
-		echo '<span class="bad">'.mysql_error().'</span><br />';
+		echo '<span class="bad">'.$database->get_error().'</span><br />';
 }else{echo '<span class="ok">Database Field pushmode exists update not needed</span><br />';}
 
 echo"<br>";
 
 // Insert default settings
-$header = addslashes('[SEARCH]');
+$header = '[SEARCH]';
 
-$footer = addslashes('<table cellpadding="0" cellspacing="0" border="0" width="98%" style="display: [DISPLAY_PREVIOUS_NEXT_LINKS]">
+$footer = '<table style="width:98%;display: [DISPLAY_PREVIOUS_NEXT_LINKS]">
 <tr>
 <td width="35%" align="left">[PREVIOUS_PAGE_LINK]</td>
 <td width="30%" align="center">[OF]</td>
 <td width="35%" align="right">[NEXT_PAGE_LINK]</td>
 </tr>
-</table>');
+</table>';
 
-$file_header = addslashes('<table cellpadding="0" cellspacing="0" border="0">
+$file_header = '<table>
 <tr>
 <td class="mod_download_gallery_line_f"> [THTITLE] </td>
 <td class="mod_download_gallery_line_rightalign_f"> [THCHANGED] </td>
 <td class="mod_download_gallery_line_rightalign_f"> [THRELEASED] </td>
 <td class="mod_download_gallery_line_rightalign_f"> [THSIZE] </td>
 <td class="mod_download_gallery_line_rightalign_f"> [THCOUNT]  </td>
-</tr>');
+</tr>';
 
-$files_loop = addslashes('<tr>
+$files_loop = '<tr>
 <td class="mod_download_gallery_line_f"><img src="[FTIMAGE]" alt="" /> <a href="[LINK]" target="dlg"><b>[TITLE]</b></a></td>
 <td class="mod_download_gallery_line_rightalign_f"> [DATE]</td>
 <td class="mod_download_gallery_line_rightalign_f"> [RELEASED]</td>
@@ -149,18 +149,18 @@ $files_loop = addslashes('<tr>
 </tr>
 <tr>
 <td class="mod_download_gallery_line_text_f" colspan="5">[DESCRIPTION]</td>
-</tr>');
+</tr>';
 
-$file_footer = addslashes('</table>');
+$file_footer = '</table>';
 
-$gloop = addslashes('<tr>
+$gloop = '<tr>
 <td colspan="5">&nbsp;</td>
 </tr>
 <tr>
 <td class="mod_download_gallery_dgheader_f" colspan="5">[GROUPTITLE]</td>
-</tr>');
+</tr>';
 
-$search_layout = addslashes('[SEARCHBOX] [SEARCHSUBMIT] [SEARCHRESULT]');
+$search_layout = '[SEARCHBOX] [SEARCHSUBMIT] [SEARCHRESULT]';
 
 $query_dates = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_download_gallery_settings where section_id != 0 and page_id != 0");
 while($result = $query_dates->fetchRow()) {
@@ -171,43 +171,43 @@ while($result = $query_dates->fetchRow()) {
 	if($database->query("UPDATE `".TABLE_PREFIX."mod_download_gallery_settings` SET `header` = '$header' WHERE `section_id` = $section_id")) {
 		echo '<span class="good">Database data header added successfully</span> - ';
 	}
-	echo '<span class="bad">'.mysql_error().'</span><br />';
+	echo '<span class="bad">'.$database->get_error().'</span><br />';
 
 		
 	if($database->query("UPDATE `".TABLE_PREFIX."mod_download_gallery_settings` SET `footer` = '$footer' WHERE `section_id` = $section_id")) {
 		echo '<span class="good">Database data footer added successfully</span> - ';
 	}
-	echo '<span class="bad">'.mysql_error().'</span><br />';
+	echo '<span class="bad">'.$database->get_error().'</span><br />';
 	
 	
 	if($database->query("UPDATE `".TABLE_PREFIX."mod_download_gallery_settings` SET `file_header` = '$file_header' WHERE `section_id` = $section_id")) {
 		echo '<span class="good">Database data file_header added successfully</span> - ';
 	}
-	echo '<span class="bad">'.mysql_error().'</span><br />';
+	echo '<span class="bad">'.$database->get_error().'</span><br />';
 
 		
 	if($database->query("UPDATE `".TABLE_PREFIX."mod_download_gallery_settings` SET `files_loop` = '$files_loop' WHERE `section_id` = $section_id")) {
 		echo '<span class="good">Database data files_loop added successfully</span> - ';
 	}
-	echo '<span class="bad">'.mysql_error().'</span><br />';
+	echo '<span class="bad">'.$database->get_error().'</span><br />';
 	
 	
 	if($database->query("UPDATE `".TABLE_PREFIX."mod_download_gallery_settings` SET `file_footer` = '$file_footer' WHERE `section_id` = $section_id")) {
 		echo '<span class="good">Database data file_footer added successfully</span> - ';
 	}
-	echo '<span class="bad">'.mysql_error().'</span><br />';
+	echo '<span class="bad">'.$database->get_error().'</span><br />';
 	
 	
 	if($database->query("UPDATE `".TABLE_PREFIX."mod_download_gallery_settings` SET `gloop` = '$gloop' WHERE `section_id` = $section_id")) {
 		echo '<span class="good">Database data gloop added successfully</span> - ';
 	}
-	echo '<span class="bad">'.mysql_error().'</span><br />';
+	echo '<span class="bad">'.$database->get_error().'</span><br />';
 
 	
 	if($database->query("UPDATE `".TABLE_PREFIX."mod_download_gallery_settings` SET `search_layout` = '$search_layout' WHERE `section_id` = $section_id")) {
 		echo '<span class="good">Database data search layout added successfully</span> - ';
 	}
-	echo '<span class="bad">'.mysql_error().'</span><br />';
+	echo '<span class="bad">'.$database->get_error().'</span><br />';
 }
 
 //Remove old search entries

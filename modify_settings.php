@@ -7,12 +7,9 @@ require('../../config.php');
 require(WB_PATH.'/modules/admin.php');	
 
 // Load Language file
-if(LANGUAGE_LOADED) {
-	require_once(WB_PATH.'/modules/download_gallery/languages/EN.php');
-	if (file_exists (WB_PATH.'/modules/download_gallery/languages/'.LANGUAGE.'.php')) {
-		require_once(WB_PATH.'/modules/download_gallery/languages/'.LANGUAGE.'.php');
-	}
-}
+if (is_readable(__DIR__.'/languages/EN.php')) {require(__DIR__.'/languages/EN.php');}
+if (is_readable(__DIR__.'/languages/'.DEFAULT_LANGUAGE.'.php')) {require(__DIR__.'/languages/'.DEFAULT_LANGUAGE.'.php');}
+if (is_readable(__DIR__.'/languages/'.LANGUAGE.'.php')) {require(__DIR__.'/languages/'.LANGUAGE.'.php');}
 
 // Get General Settings
 $query_content = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_download_gallery_settings WHERE section_id = '$section_id' and page_id = '$page_id'");
@@ -43,36 +40,27 @@ function process(element){
 			break;
 	}
 }
-
-function process2(element){
-	switch(element.value){
-		case "0":
-			document.getElementById('tr_captcha').style.display = "none";
-			break;
-		case "1":
-		case "2":
-			document.getElementById('tr_captcha').style.display = "";
-			break;
-	}
-}
 //]]>
 </script>
 
+<div class="download_gallery" style="border:none;"><?php
+	// include core functions of WB 2.7 to edit the optional module CSS files (frontend.css, backend.css)
+	@include_once(WB_PATH .'/framework/module.functions.php');
+ 	if(function_exists('edit_module_css')) edit_module_css('download_gallery'); 
+?></div>
 <form name="modify" action="<?php echo WB_URL; ?>/modules/download_gallery/save_settings.php" method="post" style="margin: 0;">
 
 	<input type="hidden" name="section_id" value="<?php echo $section_id; ?>" />
 	<input type="hidden" name="page_id" value="<?php echo $page_id; ?>" />
 
-	<table class="row_a" cellpadding="2" cellspacing="0" border="0" width="100%">
+	<table class="settings_table" style="width:100%">
+		<caption><?php echo $DGTEXT['GSETTINGS']; ?></caption>
 		<tr>
-			<td colspan="2"><strong><?php echo $DGTEXT['GSETTINGS']; ?></strong></td>
-		</tr>
-		<tr>
-			<td valign="top" width="25%"><?php echo $DGTEXT['FILES_PER_PAGE']; ?>:</td>
+			<th><?php echo $DGTEXT['FILES_PER_PAGE']; ?>:</th>
 			<td valign="top"><input type="text" name="files_per_page" value="<?php echo $fetch_content['files_per_page']; ?>" style="width: 30px" /> 0 = <?php echo $TEXT['UNLIMITED']; ?></td>
 		</tr>
 		<tr>
-			<td valign="top" width="25%"><?php echo $DGTEXT['FILE_ROUNDUP']; ?>:</td>
+			<th><?php echo $DGTEXT['FILE_ROUNDUP']; ?>:</th>
 			<td valign="top">
 		        <?php
 		        if ($fetch_content['file_size_roundup'] == '1') {
@@ -85,7 +73,7 @@ function process2(element){
 		    </td>
 		</tr>
 		<tr>
-			<td valign="top" width="25%"><?php echo $DGTEXT['SEARCHFILTER']; ?>:</td>
+			<th><?php echo $DGTEXT['SEARCHFILTER']; ?>:</th>
 			<td valign="top">
 		        <?php
 		        if ($fetch_content['search_filter'] == '1') {
@@ -98,7 +86,7 @@ function process2(element){
 		    </td>
 		</tr>
 		<tr>
-			<td valign="top" width="25%"><?php echo $DGTEXT['FILE_DECIMALS']; ?>:</td>
+			<th><?php echo $DGTEXT['FILE_DECIMALS']; ?>:</th>
 			<td valign="top">
 				<?php $decicount = stripslashes($fetch_content['file_size_decimals']); ?>
 				<?php if ($decicount == "") { $decicount = 0; } ?>
@@ -110,34 +98,7 @@ function process2(element){
 					<option value ="4" <?php if ($decicount == 4) { echo "selected='selected'"; } ?> >4</option>
 				</select>
 		    </td>
-		</tr>
-		<tr>
-			<td valign="top" width="25%"><?php echo $DGTEXT['FILE_TYPE_EXT']; ?>:</td>
-			<td valign="top">
-				<table width="98%">
-				<?php
-				if($query_fileext->numRows() > 0) {
-					while($fileext = $query_fileext->fetchRow()) {
-					?>
-					<tr>
-						<td width="20" style="padding-left: 5px;">
-							<a href="javascript:showpopup('<?php echo WB_URL; ?>/modules/download_gallery/modify_extensions.php?leptokh=#-!leptoken-!#&amp;page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;fileext_id=<?php echo $fileext['fileext_id']; ?>',800,400)" title="<?php echo $TEXT['MODIFY']; ?>">
-								<img src="<?php echo THEME_URL; ?>/images/modify_16.png" border="0" alt="Modify - " />
-							</a>
-						</td>
-						<td><?php echo "Type: " . $fileext['file_type']; ?></td>
-						<td><?php
-							$temp = (strlen($fileext['extensions']) > 55) ? "..." : "";
-							echo substr($fileext['extensions'], 0, 55) . $temp;?>
-						</td>
-					</tr>
-					<?php
-					}
-				}
-				?>
-				</table>
-			</td>
-		</tr>
+		</tr>		
 		<?php
 		/*
 		['ordering']
@@ -157,8 +118,8 @@ function process2(element){
 		*/
 		?>
 		<tr>
-			<td valign="top" width="25%"><?php echo $DGTEXT['ORDERING']; ?>:</td>
-			<td valign="top">
+			<th><?php echo $DGTEXT['ORDERING']; ?>:</th>
+			<td>
 				<select name="ordering" style="width: 200px">
 					<?php
 					if (
@@ -176,8 +137,8 @@ function process2(element){
 			</td>
 		</tr>
 		<tr>
-			<td valign="top" width="25%"><?php echo $DGTEXT['ORDERBY']; ?>:</td>
-			<td valign="top">
+			<th><?php echo $DGTEXT['ORDERBY']; ?>:</th>
+			<td>
 				<select name="orderby" style="width: 200px" onchange="process(this);">
 	            <?php
 	    		if ($fetch_content['ordering'] == '0' or $fetch_content['ordering'] == '1')	{
@@ -196,8 +157,8 @@ function process2(element){
 			</td>
 		</tr>
 		<tr id="extorder" style="display:<?php echo $visible; ?>;">
-			<td valign="top" width="25%"><?php echo $DGTEXT['EXTORDERING']; ?>:</td>
-			<td valign="top">
+			<th><?php echo $DGTEXT['EXTORDERING']; ?>:</th>
+			<td>
 				<select name="extordering" style="width: 200px">
 	            <?php
 	            if ( $fetch_content['extordering'] == '0' or $fetch_content['extordering'] == '' ) {
@@ -220,53 +181,29 @@ function process2(element){
 				</select> <?php echo $DGTEXT['EXTINFO']; ?>
 			</td>
 		</tr>
-		
 		<tr>
-			<td valign="top" width="25%"><?php echo $DGTEXT['PUSHMODE']; ?>:</td>
-			<td valign="top">
-				<select name="pushmode" style="width: 200px">
-	            <?php
-	    		if ($fetch_content['pushmode'] == '0')	{
-	                $selected_0 = 'selected="selected"';
-	                $selected_1 = '';
-				} else {
-	                $selected_0 = '';
-	                $selected_1 = 'selected="selected"';
-				}
-	            ?>
-	            <option value="0" <?php echo $selected_0; ?>><?php echo $DGTEXT['DL_view']; ?></option>
-	            <option value="1" <?php echo $selected_1; ?>><?php echo $DGTEXT['DL_save']; ?></option>
-				</select><br />
-				<?php echo $DGTEXT['PM_HELP']; ?><br />
-			</td>
-		</tr>
-		
-		<tr>
-			<td valign="top" width="25%"><?php echo $DGTEXT['USERUPLOAD']; ?>:</td>
-			<td valign="top">
+			<th><?php echo $DGTEXT['USERUPLOAD']; ?>:</th>
+			<td>
 				<?php
 					$uploadpub="";
 					$uploadreg="";
 					$uploadno="";
 				if ($fetch_content['userupload'] == '1') {
 					$uploadpub="checked='checked'";
-	                $visible2 = '';
 				} elseif ($fetch_content['userupload'] == '2') {
 					$uploadreg="checked='checked'";
-	                $visible2 = '';
 				}else {
 					$uploadno="checked='checked'";
-	                $visible2 = 'none';
 				}
 				?>
-				<input type="radio" name="userupload" class="userupload" value="0" <?php echo $uploadno; ?>  onchange="process2(this);" /><?php echo $DGTEXT['NOT']; ?>
-				<input type="radio" name="userupload" class="userupload" value="2" <?php echo $uploadreg; ?> onchange="process2(this);" /><?php echo $DGTEXT['REGISTERED']; ?>
-				<input type="radio" name="userupload" class="userupload" value="1" <?php echo $uploadpub; ?> onchange="process2(this);" /><?php echo $TEXT['PUBLIC']; ?>
+				<input type="radio" name="userupload" class="userupload" value="" <?php echo $uploadno; ?>/><?php echo $TEXT['NONE']; ?>
+				<input type="radio" name="userupload" class="userupload" value="1" <?php echo $uploadpub; ?>/><?php echo $TEXT['PUBLIC']; ?>
+				<input type="radio" name="userupload" class="userupload" value="2" <?php echo $uploadreg; ?>/><?php echo $TEXT['REGISTERED']; ?>
 			</td>
 		</tr>
-		<tr id="tr_captcha" style="display:<?php echo $visible2; ?>;">
-			<td valign="top" width="25%"><?php echo $TEXT['CAPTCHA_VERIFICATION']; ?>:</td>
-			<td valign="top">
+		<tr>
+			<th><?php echo $TEXT['CAPTCHA_VERIFICATION']; ?>:</th>
+			<td>
 				<?php
 					$use_captcha_true_checked = '';
 					$use_captcha_false_checked = '';
@@ -283,60 +220,101 @@ function process2(element){
 			</td>
 		</tr>
 	</table>
+	<table class="settings_table" style="width:100%">
+	<caption><?php echo $DGTEXT['FILE_TYPE_EXT']; ?></caption>
 
-	<table class="row_a" cellpadding="2" cellspacing="0" border="0" width="100%" style="margin-top: 8px;">
+			<thead>
+		
+		
 		<tr>
-			<td colspan="2"><strong><?php echo $DGTEXT['LSETTINGS']; ?></strong></td>
-		</tr>
+					<td><b>Type</b></td>
+					<td><b>Extensions</b></td>
+					<td><b><?php echo $TEXT['MODIFY']?>?</b></td>
+				</tr></thead>
+				<?php
+				if($query_fileext->numRows() > 0) {
+					while($fileext = $query_fileext->fetchRow()) {
+					
+					
+					$unknown_icon = '<img src="images/unknown.gif" alt="[unknown.gif]" />';	
+					if($ext_icon = $fileext['file_image']){								
+						$ext_icon = str_replace('unknown.gif', $ext_icon, $unknown_icon);
+					}else{
+						$ext_icon = $unknown_icon;	
+					} 
+					?>
+					<tr>
+						<td><nobr><?php echo strtolower($ext_icon); ?> <b><?php echo $fileext['file_type']; ?></b></nobr></td>
+						<td><?php
+							$temp = (strlen($fileext['extensions']) > 55) ? "..." : "";
+							echo substr($fileext['extensions'], 0, 55) . $temp;?>
+						</td>
+						<td width="20" style="padding-left: 5px;">
+							<a href="javascript:showpopup('<?php echo WB_URL; ?>/modules/download_gallery/modify_extensions.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;fileext_id=<?php echo $fileext['fileext_id']; ?>',800,400)" title="<?php echo $TEXT['MODIFY']; ?>">
+								<img src="images/rename_16.png" border="0" alt="[<?php echo $TEXT['MODIFY']?>]" />
+							</a>
+						</td>
+					</tr>
+					<?php
+					}
+				}
+				?>
+	</table>
+
+	<table class="settings_table" style="width:100%;margin-top: 5px;">
+		<caption><?php echo $DGTEXT['LSETTINGS']; ?></caption>		
 		<tr>
-			<td valign="top" width="25%"><?php echo $TEXT['HEADER']; ?>:</td>
+			<th><?php echo $TEXT['HEADER']; ?>:</th>
 			<td valign="top"><textarea cols="50" rows="5" name="header" style="width: 98%; height: 80px;"><?php echo htmlspecialchars($fetch_content['header']); ?></textarea></td>
 		</tr>
 		<tr>
-			<td valign="top" width="25%"><?php echo $TEXT['FOOTER']; ?>:</td>
-			<td valign="top"><textarea cols="50" rows="5" name="footer" style="width: 98%; height: 80px;"><?php echo htmlspecialchars($fetch_content['footer']); ?></textarea></td>
+			<th><?php echo $TEXT['FILE'].' '.$TEXT['HEADER']; ?>:</th>
+			<td class="newsection" valign="top"><textarea cols="50" rows="8" name="file_header" style="width: 98%; height: 140px;"><?php echo htmlspecialchars($fetch_content['file_header']); ?></textarea></td>
 		</tr>
 		<tr>
-			<td class="newsection" valign="top" width="25%"><?php echo $TEXT['FILE'].' '.$TEXT['HEADER']; ?>:</td>
-			<td class="newsection" valign="top"><textarea cols="50" rows="5" name="file_header" style="width: 98%; height: 60px;"><?php echo htmlspecialchars($fetch_content['file_header']); ?></textarea></td>
-		</tr>
-		<tr>
-			<td valign="top" width="25%"><?php echo $TEXT['FILE'].' '.$TEXT['LOOP']; ?>:</td>
-			<td valign="top"><textarea cols="50" rows="5" name="files_loop" style="width: 98%; height: 60px;"><?php echo htmlspecialchars($fetch_content['files_loop']); ?></textarea></td>
-		</tr>
-		<tr>
-			<td valign="top"width="25%"><?php echo $TEXT['FILE'].' '.$TEXT['FOOTER']; ?>:</td>
-			<td valign="top"><textarea cols="50" rows="5" name="file_footer" style="width: 98%; height: 60px;"><?php echo htmlspecialchars($fetch_content['file_footer']); ?></textarea></td>
-		</tr>
-		<tr>
-			<td class="newsection" valign="top" width="25%"><?php echo $DGTEXT['GPHEADER']; ?></td>
+			<th><?php echo $DGTEXT['GPHEADER']; ?></th>
 			<td class="newsection" valign="top"><textarea cols="50" rows="5" name="gheader" style="width:98%; height: 60px;"><?php echo htmlspecialchars($fetch_content['gheader']); ?></textarea></td>
+		</tr>	
+		<tr>
+			<th><?php echo $DGTEXT['GPLOOP']; ?></th>
+			<td valign="top"><textarea cols="50" rows="5" name="gloop" style="width:98%; height: 100px;"><?php echo htmlspecialchars($fetch_content['gloop']); ?></textarea></td>
 		</tr>
 		<tr>
-			<td valign="top"width="25%"><?php echo $DGTEXT['GPLOOP']; ?></td>
-			<td valign="top"><textarea cols="50" rows="5" name="gloop" style="width:98%; height: 60px;"><?php echo htmlspecialchars($fetch_content['gloop']); ?></textarea></td>
-		</tr>
-		<tr>
-			<td valign="top"width="25%"><?php echo $DGTEXT['GPFOOTER']; ?></td>
+			<th><?php echo $DGTEXT['GPFOOTER']; ?></th>
 			<td valign="top"><textarea cols="50" rows="5" name="gfooter" style="width:98%; height: 60px;"><?php echo htmlspecialchars($fetch_content['gfooter']); ?></textarea></td>
 		</tr>
 		<tr>
-			<td class="newsection" valign="top"width="25%"><?php echo $DGTEXT['SEARCHLAYOUT']; ?></td>
+			<th><?php echo $TEXT['FILE'].' '.$TEXT['LOOP']; ?>:</th>
+			<td valign="top"><textarea cols="50" rows="5" name="files_loop" style="width: 98%; height: 190px;"><?php echo htmlspecialchars($fetch_content['files_loop']); ?></textarea></td>
+		</tr>
+		<tr>
+			<th><?php echo $TEXT['FILE'].' '.$TEXT['FOOTER']; ?>:</th>
+			<td valign="top"><textarea cols="50" rows="5" name="file_footer" style="width: 98%; height: 60px;"><?php echo htmlspecialchars($fetch_content['file_footer']); ?></textarea></td>
+		</tr>
+		<tr>
+			<th><?php echo $TEXT['FOOTER']; ?>:</th>
+			<td valign="top"><textarea cols="50" rows="5" name="footer" style="width: 98%; height: 180px;"><?php echo htmlspecialchars($fetch_content['footer']); ?></textarea></td>
+		</tr>
+		<tr class="row_separator">		
+			<td colspan="2"></td>
+		</tr>
+		<tr>
+			<th><?php echo $DGTEXT['SEARCHLAYOUT']; ?></th>
 			<td class="newsection" valign="top"><textarea cols="50" rows="5" name="search_layout" style="width:98%; height: 60px;"><?php echo htmlspecialchars($fetch_content['search_layout']); ?></textarea></td>
 		</tr>
 
 	</table>
 
-	<table cellpadding="0" cellspacing="0" border="0" width="100%">
+	<table style="width:100%">
 		<tr>
 			<td align="left">
-				<input name="save" type="submit" value="<?php echo $TEXT['SAVE']; ?>" style="width: 100px; margin-top: 5px;" />
+				<input name="save" type="submit" value="<?php echo $TEXT['SAVE']; ?>" class="btn w3-theme-d5 w3-hover-green w3-padding-4 w3-border-theme" style="margin-top: 5px;" />
 			</td>
 			<td align="center">
-				<input name="reset_table" type="submit" value="<?php echo $DGTEXT['RESET_TABLE']; ?>" style="margin-top: 5px;" />
+				<input name="reset_table" type="submit" value="<?php echo $DGTEXT['RESET_TABLE']; ?>" class="btn w3-theme-d5 w3-hover-green w3-padding-4 w3-border-theme" style="margin-top: 5px;" />
 			</td>
 			<td align="right">
-				<input type="button" value="<?php echo $TEXT['CANCEL']; ?>" onclick="javascript:window.location='<?php echo ADMIN_URL; ?>/pages/modify.php?page_id=<?php echo $page_id; ?>';" style="width: 100px; margin-top: 5px;" />
+				<input type="button" value="<?php echo $TEXT['CANCEL']; ?>" onclick="javascript:window.location='<?php echo ADMIN_URL; ?>/pages/modify.php?page_id=<?php echo $page_id; ?>';" class="btn w3-theme-d5 w3-hover-green w3-padding-4 w3-border-theme" style="margin-top: 5px;" />
 			</td>
 		</tr>
 	</table>
